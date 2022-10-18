@@ -59,5 +59,3 @@ function NavBar(){
       </nav>
     )
 }
-
-export default NavBar
