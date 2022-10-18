@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { CreatePlaylistController, DeletePlaylistController, DownloadPlaylistController, GetPlaylistController, ListPlaylistsByCategoryController, ListPlaylistsByNameController, ListPlaylistsByRelevanceController, ListPlaylistsController, UpdatePlaylistController } from '../controller/playlist.js'
+import { CreatePlaylistController, DeletePlaylistController, DownloadPlaylistController, GetPlaylistController, ListPlaylistFollowersController, ListPlaylistsByCategoryController, ListPlaylistsByNameController, ListPlaylistsByRelevanceController, ListPlaylistsController, UpdatePlaylistController } from '../controller/playlist.js'
 
 class PlaylistRouter {
     constructor() {
@@ -14,6 +14,7 @@ class PlaylistRouter {
         this.router.post('/downloadPlaylist', new DownloadPlaylistController().downloadPlaylist)
         this.router.post('/listPlaylists', new ListPlaylistsController().listPlaylists)
         this.router.post('/listPlaylistByCategory', new ListPlaylistsByCategoryController().listPlaylistsByCategory)
+        this.router.post('/listPlaylistFollowers', new ListPlaylistFollowersController().listPlaylistFollowers)
     }
 
     getRouter() {

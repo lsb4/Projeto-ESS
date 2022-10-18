@@ -136,6 +136,25 @@ function listPlaylistsByCategory(category) {
     return playlists ? playlists : []
 }
 
+function listPlaylistFollowers(id) {
+    let table = readDB('playlists')
+    let index
+    for (let i=0; i<table.length; i = i+1) {
+        if (id === table[i].id) {
+            index = i
+            break
+        }
+    }
+
+    let playlist = table[index]
+
+    let usersTable = readDB('users')
+
+    let followers = playlist.followers.map(el => usersTable.find(e => e.id === el))
+    return followers
+
+}
+
 
 export {
     createPlaylist,
@@ -146,5 +165,6 @@ export {
     listPlaylistsByRelevance,
     downloadPlaylist,
     listPlaylists,
-    listPlaylistsByCategory
+    listPlaylistsByCategory,
+    listPlaylistFollowers
 }

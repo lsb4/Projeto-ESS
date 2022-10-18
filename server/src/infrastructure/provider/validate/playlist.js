@@ -69,6 +69,16 @@ class ListPlaylistsByCategoryUseCaseValidate {
     }
 }
 
+class ListPlaylistFollowersUseCaseValidate {
+    listPlaylistFollowers(req) {
+        if (isEmpty(req.id)) return 'O identificador de playlist não pode ser vazio.'
+        if (!isNumber(req.id)) return 'O identificador de playlist tem que ser um número.'
+        if (!getPlaylist(req.id)) return 'Não existe playlist com esse identificador no banco.'
+
+        return null
+    }
+}
+
 export {
     CreatePlaylistUseCaseValidate,
     GetPlaylistUseCaseValidate,
@@ -77,6 +87,7 @@ export {
     ListPlaylistsByNameUseCaseValidate,
     ListPlaylistsByRelevanceUseCaseValidate,
     DownloadPlaylistUseCaseValidate,
-    ListPlaylistsByCategoryUseCaseValidate
+    ListPlaylistsByCategoryUseCaseValidate,
+    ListPlaylistFollowersUseCaseValidate
 
 }

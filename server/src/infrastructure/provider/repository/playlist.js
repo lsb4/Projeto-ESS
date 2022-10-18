@@ -1,4 +1,4 @@
-import { createPlaylist, deletePlaylist, downloadPlaylist, getPlaylist, listPlaylists, listPlaylistsByCategory, listPlaylistsByName, listPlaylistsByRelevance, updatePlaylist } from '../../internal/playlist.js'
+import { createPlaylist, deletePlaylist, downloadPlaylist, getPlaylist, listPlaylistFollowers, listPlaylists, listPlaylistsByCategory, listPlaylistsByName, listPlaylistsByRelevance, updatePlaylist } from '../../internal/playlist.js'
 
 class CreatePlaylistUseCaseRepository {
     createPlaylist(name, image, accountID, category) {
@@ -58,6 +58,12 @@ class ListPlaylistsByCategoryUseCaseRepository {
     }
 }
 
+class ListPlaylistFollowersUseCaseRepository {
+    listPlaylistFollowers(id) {
+        return listPlaylistFollowers(id)
+    }
+}
+
 export {
     CreatePlaylistUseCaseRepository,
     GetPlaylistUseCaseRepository,
@@ -67,5 +73,6 @@ export {
     ListPlaylistsByRelevanceUseCaseRepository,
     DownloadPlaylistUseCaseRepository,
     ListPlaylistsUseCaseRepository,
-    ListPlaylistsByCategoryUseCaseRepository
+    ListPlaylistsByCategoryUseCaseRepository,
+    ListPlaylistFollowersUseCaseRepository
 }

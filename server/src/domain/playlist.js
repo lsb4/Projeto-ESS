@@ -1,4 +1,4 @@
-import {CreatePlaylistUseCaseResponse, DeletePlaylistUseCaseResponse, DownloadPlaylistUseCaseResponse, GetPlaylistUseCaseResponse, ListPlaylistsByCategoryUseCaseResponse, ListPlaylistsByNameUseCaseResponse, ListPlaylistsByRelevanceUseCaseResponse, ListPlaylistsUseCaseResponse, UpdatePlaylistUseCaseResponse } from './ucio/playlist.js'
+import {CreatePlaylistUseCaseResponse, DeletePlaylistUseCaseResponse, DownloadPlaylistUseCaseResponse, GetPlaylistUseCaseResponse, ListPlaylistFollowersUseCaseResponse, ListPlaylistsByCategoryUseCaseResponse, ListPlaylistsByNameUseCaseResponse, ListPlaylistsByRelevanceUseCaseResponse, ListPlaylistsUseCaseResponse, UpdatePlaylistUseCaseResponse } from './ucio/playlist.js'
 class CreatePlaylistUseCase {
     constructor(validate, repository) {
         this.validate = validate
@@ -215,6 +215,31 @@ class ListPlaylistsByCategoryUseCase {
     }
 }
 
+class ListPlaylistFollowersUseCase {
+    constructor(validate,repository) {
+        this.validate = validate
+        this.repository = repository
+    }
+
+    listPlaylistFollowers(req) {
+        try{
+            const errorMessage = this.validate.listPlaylistFollowers(req)
+
+            if(!errorMessage) {
+                const data = this.repository.listPlaylistFollowers(req.id)
+
+                return new ListPlaylistFollowersUseCaseResponse(data,null)
+            } else {
+                console.log('ERRO DE VALIDAÇÃO:', errorMessage)
+                return new ListPlaylistFollowersUseCaseResponse(null, errorMessage)
+            }
+        } catch(error) {
+            console.log('ERRO INTERNO DO SERVIDOR:', error)
+            return new ListPlaylistFollowersUseCaseResponse(null, error.message)
+        }
+    }
+}
+
 export {
     CreatePlaylistUseCase,
     GetPlaylistUseCase,
@@ -224,5 +249,6 @@ export {
     ListPlaylistsByRelevanceUseCase,
     DownloadPlaylistUseCase,
     ListPlaylistsUseCase,
-    ListPlaylistsByCategoryUseCase
+    ListPlaylistsByCategoryUseCase,
+    ListPlaylistFollowersUseCase
 }
