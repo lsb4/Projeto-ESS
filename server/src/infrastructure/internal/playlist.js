@@ -155,6 +155,15 @@ function listPlaylistFollowers(id) {
 
 }
 
+function updatePlaylistFollowers(id, followers, accountID) {
+    let table = readDB('playlists')
+    let playlist = table.find(e => e.id === id)
+    let i = table.indexOf(playlist)
+    table[i].followers = followers
+    writeDB('playlists', table)
+    return
+}
+
 
 export {
     createPlaylist,
@@ -166,5 +175,6 @@ export {
     downloadPlaylist,
     listPlaylists,
     listPlaylistsByCategory,
-    listPlaylistFollowers
+    listPlaylistFollowers,
+    updatePlaylistFollowers
 }

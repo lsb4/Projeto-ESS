@@ -38,7 +38,6 @@ function EditPlaylistModal({ playlistName, followersNumber, playlistOwner, playl
         })
 
         let val = response.data
-        console.log(val)
         setSent(true)
         setTimeout(()=> {closeModal(); window.location.reload()}, 2000)
     } catch(error) {
@@ -71,7 +70,6 @@ function EditPlaylistModal({ playlistName, followersNumber, playlistOwner, playl
         </div></>
       )
     } catch(err) {
-      console.log('erro no upload de imagem', err)
       setErrorMessage(
         <div className="editPlaylistModal-alert"><p className="editPlaylistModal-alert-text">Erro no upload da imagem! Tente novamente mais tarde</p></div>
       )

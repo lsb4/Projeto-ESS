@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import axiosInstance from "../common/server";
 import "./addMusicModal.css";
 
 import closeX from "./assets/closeX.svg";
@@ -17,7 +19,69 @@ function AddMusicModal(props) {
     dataBaseMusics,
   } = props;
 
-  console.log(dataBaseMusics);
+  const [selectDataBaseMusics, setSelectDataBaseMusics] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+  const [sucessMessage, setSucessMessage] = useState(null)
+  const [newList, setNewList] = useState(null)
+
+  useEffect(()=>{
+    if(dataBaseMusics) {
+      setSelectDataBaseMusics(new Array(dataBaseMusics.length).fill(0))
+      setNewList(playlistMusics? playlistMusics : [])
+    }
+  },[props.dataBaseMusics])
+
+  function addFromDatabase(value) {
+    let val = selectDataBaseMusics
+    val[value] = 1 - val[value]
+    setSelectDataBaseMusics(val)
+    const addition = dataBaseMusics.filter((el,index) => val[index]===1)
+    const additions = addition.map(el => el.id)
+    
+    const brandNewList = (playlistMusics ? playlistMusics.concat(additions): additions )
+    setNewList(brandNewList)
+  }
+
+
+
+  async function addToPlaylist() {
+    try {
+      const response = await axiosInstance({
+        method: 'post',
+        url: '/updatePlaylist',
+        headers: {}, 
+        data: {
+          id: playlistID,
+          name: playlistName,
+          image:  playlistImage,
+          category: playlistCategory,
+          musics: newList,
+          accountID: parseInt(localStorage.getItem('accountID'),10)
+        }
+      })
+      document.querySelector('.addMusicModal-modal').style.display = 'none'
+      setSucessMessage(
+      <div className="addMusicModal-modal">
+      <p className="addMusicModal-modal-text">
+          Músicas adicionadas com sucesso!
+        </p>
+      </div>)
+      let val = response.data
+      setTimeout(() => {window.location.reload()}, 2000)
+    } catch(error) {
+      document.querySelector('.addMusicModal-modal').style.display = 'none'
+      setErrorMessage(
+        <div className="addMusicModal-modal">
+        <p className="addMusicModal-modal-text">
+            Erro ao adicionar músicas! Tente novamente mais tarde
+          </p>
+        </div>
+      )
+      setTimeout(() => {window.location.reload()}, 2000)
+    }
+
+
+  }
 
   return (
     <div className="addMusicModal-main">
@@ -50,9 +114,9 @@ function AddMusicModal(props) {
                     <input
                       type="checkbox"
                       value={index}
-                      //onChange={(event) =>
-                      //  removefromMusicArray(event.target.value)
-                      //}
+                      onChange={(event) =>
+                        addFromDatabase(event.target.value)
+                      }
                       id={`addMusicModal-removeCheckbox${index}`}
                     />
                   </div>
@@ -60,10 +124,12 @@ function AddMusicModal(props) {
               );
             })}
         </div>
-        <p className="addMusicModal-modal-button" onClick={AddSelectedMusics}>
+        <p className="addMusicModal-modal-button" onClick={addToPlaylist}>
           Adicionar
         </p>
       </div>
+      {errorMessage}
+      {sucessMessage}
     </div>
   );
 

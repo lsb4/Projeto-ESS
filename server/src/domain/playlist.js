@@ -1,4 +1,4 @@
-import {CreatePlaylistUseCaseResponse, DeletePlaylistUseCaseResponse, DownloadPlaylistUseCaseResponse, GetPlaylistUseCaseResponse, ListPlaylistFollowersUseCaseResponse, ListPlaylistsByCategoryUseCaseResponse, ListPlaylistsByNameUseCaseResponse, ListPlaylistsByRelevanceUseCaseResponse, ListPlaylistsUseCaseResponse, UpdatePlaylistUseCaseResponse } from './ucio/playlist.js'
+import {CreatePlaylistUseCaseResponse, DeletePlaylistUseCaseResponse, DownloadPlaylistUseCaseResponse, GetPlaylistUseCaseResponse, ListPlaylistFollowersUseCaseResponse, ListPlaylistsByCategoryUseCaseResponse, ListPlaylistsByNameUseCaseResponse, ListPlaylistsByRelevanceUseCaseResponse, ListPlaylistsUseCaseResponse, UpdatePlaylistFollowersUseCaseRequest, UpdatePlaylistFollowersUseCaseResponse, UpdatePlaylistUseCaseResponse } from './ucio/playlist.js'
 class CreatePlaylistUseCase {
     constructor(validate, repository) {
         this.validate = validate
@@ -240,6 +240,31 @@ class ListPlaylistFollowersUseCase {
     }
 }
 
+class UpdatePlaylistFollowersUseCase {
+    constructor(validate, repository) {
+        this.validate = validate
+        this.repository = repository
+    }
+
+    updatePlaylistFollowers(req) {
+        try{
+            const errorMessage = this.validate.updatePlaylistFollowers(req)
+
+            if (!errorMessage) {
+                const data = this.repository.updatePlaylistFollowers(req.id, req.followers, req.accountID)
+
+                return new UpdatePlaylistFollowersUseCaseResponse(null)
+            } else {
+                console.log('ERRO DE VALIDAÇÃO:', errorMessage)
+                return new UpdatePlaylistFollowersUseCaseResponse(errorMessage)
+            }
+        } catch(error) {
+            console.log('ERRO INTERNO DO SERVIDOR:', error)
+            return new UpdatePlaylistFollowersUseCaseResponse(error.message)
+        }
+    }
+}
+
 export {
     CreatePlaylistUseCase,
     GetPlaylistUseCase,
@@ -250,5 +275,6 @@ export {
     DownloadPlaylistUseCase,
     ListPlaylistsUseCase,
     ListPlaylistsByCategoryUseCase,
-    ListPlaylistFollowersUseCase
+    ListPlaylistFollowersUseCase,
+    UpdatePlaylistFollowersUseCase
 }

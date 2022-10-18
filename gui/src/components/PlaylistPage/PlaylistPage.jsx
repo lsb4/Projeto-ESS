@@ -64,7 +64,6 @@ function PlaylistPage () {
         const playlistMusics = playlistData.musics.map((music) =>
           musics.find((el) => el.id === music)
         );
-        console.log(playlistMusics)
         
         setMusics(playlistMusics)
 

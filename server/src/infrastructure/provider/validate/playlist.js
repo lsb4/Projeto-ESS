@@ -79,6 +79,17 @@ class ListPlaylistFollowersUseCaseValidate {
     }
 }
 
+class UpdatePlaylistFollowersUseCaseValidate {
+    updatePlaylistFollowers(req) {
+        if (isEmpty(req.id)) return 'O identificador de playlist não pode ser vazio.'
+        const playlist = getPlaylist(req.id)
+        if (!playlist) return 'Não existe playlist com esse identificador no banco.'
+        if (playlist.accountID !== req.accountID) return 'O usuário não tem permissão de alterar essa playlist.'
+        return null
+
+    }
+}
+
 export {
     CreatePlaylistUseCaseValidate,
     GetPlaylistUseCaseValidate,
@@ -88,6 +99,7 @@ export {
     ListPlaylistsByRelevanceUseCaseValidate,
     DownloadPlaylistUseCaseValidate,
     ListPlaylistsByCategoryUseCaseValidate,
-    ListPlaylistFollowersUseCaseValidate
+    ListPlaylistFollowersUseCaseValidate,
+    UpdatePlaylistFollowersUseCaseValidate
 
 }

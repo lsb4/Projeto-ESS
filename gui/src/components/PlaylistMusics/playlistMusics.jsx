@@ -36,7 +36,6 @@ function PlaylistMusics(props) {
     let val = selectedMusicArray;
     val[index] = 1 - val[index];
     setSelectedMusicArray(val);
-    console.log(val);
   }
 
   function removeMusicsPlaylist() {
@@ -114,7 +113,6 @@ function PlaylistMusics(props) {
 
   function showRemoveMusicModal() {
     let val = removeMusicsPlaylist();
-    console.log(val);
     if (val.length !== musicArray.length) {
       props.setSelection(val);
       document.querySelector(".removeMusicModalDiv").style.display = "block";
@@ -207,6 +205,12 @@ function PlaylistMusics(props) {
             <p onClick={selectAllMusics}>Selecionar todas</p>
             <p onClick={showRemoveMusicModal}>Remover</p>
             <p onClick={cancelRemoveMusics}>Cancelar</p>
+          </div>
+          <div className="addMusicModalDiv">
+            <AddMusicModal dataBaseMusics={bdMusics} playlistName={playlistName} followersNumber={followersNumber} playlistOwner={playlistOwner} playlistMusics={playlistMusics} playlistID={playlistID} playlistImage={playlistImage} playlistCategory={playlistCategory} selectedPlaylist={selectedPlaylist}/>
+          </div>
+          <div className="playlistMusics-noMusicDiv">
+            <p onClick={showAddMusicsModal}>Adicionar música</p>
           </div>
         </div>
       </div>

@@ -14,40 +14,9 @@ function FollowersListModal(props) {
     playlistImage,
     playlistCategory,
     selectedPlaylist,
+    followers
   } = props;
 
-  const followersList = [
-    {
-      name: "Cleidinho1"
-    },
-    {
-      name: "Cleidinho2"
-    },
-    {
-      name: "Cleidinho3"
-    },
-    {
-      name: "Cleidinho4"
-    },
-    {
-      name: "Cleidinho5"
-    },
-    {
-      name: "Cleidinho5"
-    },
-    {
-      name: "Cleidinho5"
-    },
-    {
-      name: "Cleidinho5"
-    },
-    {
-      name: "Cleidinho5"
-    },
-    {
-      name: "Cleidinho5"
-    },
-  ];
 
   return (
     <div className="followersListModal-main">
@@ -60,8 +29,8 @@ function FollowersListModal(props) {
       <div className="followersListModal-modal">
         <p className="followersListModal-modal-text">Seguidores</p>
         <div className="followersListModal-modal-followers">
-          {followersList &&
-            followersList.map((follower, index) => {
+          {followers &&
+            followers.map((follower, index) => {
               return (
                 <div key={index} className="followersListModal-follower">
                   <div className="followersListModal-follower-infos">

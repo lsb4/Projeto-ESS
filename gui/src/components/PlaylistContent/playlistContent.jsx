@@ -17,11 +17,13 @@ import removePlaylistButton from "./assets/removePlaylist.svg";
 import shareButton from "./assets/share.svg";
 
 import defaultImage from "./assets/defaultPlaylistImage.svg";
+import { useEffect } from "react";
+import axiosInstance from "../common/server";
+import { useState } from "react";
 
 function PlaylistContent(props) {
   const {
     playlistName,
-    followersNumber,
     playlistOwner,
     playlistDuration,
     playlistMusics,
@@ -32,6 +34,95 @@ function PlaylistContent(props) {
   } = props;
 
   let optionsFlag = 0;
+  const [followers,setFollowers] = useState([])
+  const [followersNumber, setFollowersNumber] = useState(0)
+  const accountID = parseInt(localStorage.getItem('accountID'),10)
+  const [user, setUser] = useState(null)
+
+
+  useEffect(()=>{
+    async function getFollowers() {
+        const response = await axiosInstance({
+            method: "post",
+            url: `/listPlaylistFollowers`,
+            headers: {},
+            data: {
+              id: playlistID 
+            },
+          })
+        return response.data
+    }
+
+    async function fetchUser(value) {
+      const response = await axiosInstance({
+        method: "post",
+        url: `/getUser`,
+        headers: {},
+        data: {
+          accountID: parseInt(localStorage.getItem('accountID'),10)
+        },
+      });
+      let val = await response.data
+      return val
+    }
+
+    async function run() {
+        const followrs = await getFollowers()
+        const user = await fetchUser()
+        setUser(user)
+        setFollowers(followrs)
+        setFollowersNumber(followrs ? followrs.length : 0)
+        if (followrs.indexOf(accountID) === -1) {
+          document
+        .querySelectorAll(".playlistContent-followHeart")
+        .forEach((heartImage) => {
+          if (heartImage.firstElementChild != null) {
+            heartImage.firstElementChild.src = followButton;
+          } else {
+            heartImage.src = followButton;
+          }
+        }
+        )}
+        else {
+          document
+          .querySelectorAll(".playlistContent-followHeart")
+          .forEach((heartImage) => {
+            if (heartImage.firstElementChild != null) {
+              heartImage.firstElementChild.src = coloredHeart;
+            } else {
+              heartImage.src = coloredHeart;
+            }
+          });
+        }
+    }
+    run()
+
+  },[])
+
+  async function updateFollowers(value) {
+    async function run(value) {
+      
+      try {
+        const response = await axiosInstance({
+          method: 'post',
+          url: '/updatePlaylistFollowers',
+          headers: {}, 
+          data: {
+            id: playlistID,
+            followers: value,
+            accountID: parseInt(localStorage.getItem('accountID'),10)
+          }
+        })
+        const val = response.data
+        return val
+      } catch(error) {
+        return error.message
+      }
+    }
+    const val = await run(value)
+
+    return val
+  }
 
   function closeOptions() {
     document.querySelector(
@@ -68,10 +159,15 @@ function PlaylistContent(props) {
     optionsFlag = 1;
   }
 
-  let isFollower = 0;
-  function followPLaylist() {
-    if (isFollower) {
-      document
+  async function followPLaylist() {
+    const followersID = followers ? followers.map(el => el.id) : []
+    let isFollower = followersID.indexOf(parseInt(localStorage.getItem('accountID'), 10))
+    if (isFollower !== -1) {
+      const val = followersID
+      const filtered = val.filter(el=> el !== parseInt(localStorage.getItem('accountID'),10))
+      const err = await updateFollowers(filtered)
+      if(!err) {
+        document
         .querySelectorAll(".playlistContent-followHeart")
         .forEach((heartImage) => {
           if (heartImage.firstElementChild != null) {
@@ -79,19 +175,29 @@ function PlaylistContent(props) {
           } else {
             heartImage.src = followButton;
           }
-        });
-      isFollower = 0;
+        })
+
+        const newFollowers = followers.filter(el => filtered.indexOf(el.id)!== -1)
+        setFollowers(newFollowers)
+        setFollowersNumber(newFollowers.length)
+      }
     } else {
-      document
-        .querySelectorAll(".playlistContent-followHeart")
-        .forEach((heartImage) => {
-          if (heartImage.firstElementChild != null) {
-            heartImage.firstElementChild.src = coloredHeart;
-          } else {
-            heartImage.src = coloredHeart;
-          }
-        });
-      isFollower = 1;
+        followersID.push(parseInt(localStorage.getItem('accountID')))
+        const err = await updateFollowers(followersID)
+        if(!err) {
+          document
+          .querySelectorAll(".playlistContent-followHeart")
+          .forEach((heartImage) => {
+            if (heartImage.firstElementChild != null) {
+              heartImage.firstElementChild.src = coloredHeart;
+            } else {
+              heartImage.src = coloredHeart;
+            }
+          })
+          const newFollowers = [...followers, user]
+          setFollowers(newFollowers)
+          setFollowersNumber(newFollowers.length)
+        }
     }
     // Se a pessoa não seguir -> Começa a seguir e o coração fica colorido
     // Se a pessoa seguir -> Deixa de seguir e o coração fica escuro
@@ -128,7 +234,6 @@ function PlaylistContent(props) {
     document.querySelector(".followersListModalDiv").style.display = "block";
   }
 
-  console.log("CONTENT:", props);
   return (
     <div className="playlistContent-main">
       <div className="removePlaylistModalDiv">
@@ -163,7 +268,7 @@ function PlaylistContent(props) {
         />
       </div>
       <div className="followersListModalDiv">
-        <FollowersListModal />
+        <FollowersListModal followers={followers} />
       </div>
       <div
         className="playlistContent-image"
@@ -189,7 +294,7 @@ function PlaylistContent(props) {
       <div className="playlistContent-buttons">
         <div className="darkOverlay"></div>
         <img src={playButton} alt="Play button" />
-        <img
+         <img
           onClick={followPLaylist}
           className="playlistContent-followHeart"
           src={followButton}
