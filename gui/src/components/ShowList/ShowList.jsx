@@ -15,7 +15,6 @@ function ShowList(props) {
   const [playlistID, setPlaylistID] = useState(undefined);
 
   const toggleDropdown = () => {
-    console.log("show modal");
     setCreatePlaylistModal("show");
   };
 

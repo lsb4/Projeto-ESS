@@ -130,6 +130,20 @@ class ListPlaylistFollowersUseCaseResponse {
     }
 }
 
+class UpdatePlaylistFollowersUseCaseRequest {
+    constructor(id, followers, accountID) {
+        this.id = id
+        this.followers = followers
+        this.accountID = accountID
+    }
+}
+
+class UpdatePlaylistFollowersUseCaseResponse {
+    constructor(error) {
+        this.error = error
+    }
+}
+
 export {
     CreatePlaylistUseCaseRequest,
     CreatePlaylistUseCaseResponse,
@@ -149,5 +163,7 @@ export {
     ListPlaylistsByCategoryUseCaseRequest,
     ListPlaylistsByCategoryUseCaseResponse,
     ListPlaylistFollowersUseCaseResquest,
-    ListPlaylistFollowersUseCaseResponse
+    ListPlaylistFollowersUseCaseResponse,
+    UpdatePlaylistFollowersUseCaseRequest,
+    UpdatePlaylistFollowersUseCaseResponse
 }

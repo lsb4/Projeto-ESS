@@ -19,8 +19,6 @@ function CreatePlaylist(props) {
   const [preview, setPreview] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  console.log(localStorage.getItem("accountID"));
-
   const navigate = useNavigate();
 
   const closeModal = () => {
@@ -48,7 +46,6 @@ function CreatePlaylist(props) {
 
       const response = await s3.upload(params).promise();
 
-      console.log(response.Location);
       setPlaylistImage(response.Location);
 
       setPreview(
@@ -91,12 +88,10 @@ function CreatePlaylist(props) {
       setPlaylistCategory(undefined);
       setPlaylistImage(undefined);
 
-      console.log(response.data);
       navigate("/PlaylistPage", { state: { ID: response.data.id } });
       closeModal();
       return;
     } catch (error) {
-      console.log("erro na criação de playlist!");
       setErrorMessage(
         <div class="alert-create-playlist">
           <span class="closebtn-create-playlist" onClick={closeModal}>

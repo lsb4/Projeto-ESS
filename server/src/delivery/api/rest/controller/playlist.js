@@ -1,7 +1,7 @@
-import { CreatePlaylistUseCase, DeletePlaylistUseCase, DownloadPlaylistUseCase, GetPlaylistUseCase, ListPlaylistFollowersUseCase, ListPlaylistsByCategoryUseCase, ListPlaylistsByNameUseCase, ListPlaylistsByRelevanceUseCase, ListPlaylistsUseCase, UpdatePlaylistUseCase } from '../../../../domain/playlist.js'
-import { CreatePlaylistUseCaseRequest, DeletePlaylistUseCaseRequest, DownloadPlaylistUseCaseRequest, GetPlaylistUseCaseRequest, ListPlaylistFollowersUseCaseResquest, ListPlaylistsByCategoryUseCaseRequest, ListPlaylistsByNameUseCaseRequest, ListPlaylistsByRelevanceUseCaseRequest, UpdatePlaylistUseCaseRequest } from '../../../../domain/ucio/playlist.js'
-import { CreatePlaylistUseCaseRepository, DeletePlaylistUseCaseRepository, DownloadPlaylistUseCaseRepository, GetPlaylistUseCaseRepository, ListPlaylistFollowersUseCaseRepository, ListPlaylistsByCategoryUseCaseRepository, ListPlaylistsByNameUseCaseRepository, ListPlaylistsByRelevanceUseCaseRepository, ListPlaylistsUseCaseRepository, UpdatePlaylistUseCaseRepository } from '../../../../infrastructure/provider/repository/playlist.js'
-import { CreatePlaylistUseCaseValidate, DeletePlaylistUseCaseValidate, DownloadPlaylistUseCaseValidate, GetPlaylistUseCaseValidate, ListPlaylistFollowersUseCaseValidate, ListPlaylistsByCategoryUseCaseValidate, ListPlaylistsByNameUseCaseValidate, ListPlaylistsByRelevanceUseCaseValidate, UpdatePlaylistUseCaseValidate } from '../../../../infrastructure/provider/validate/playlist.js'
+import { CreatePlaylistUseCase, DeletePlaylistUseCase, DownloadPlaylistUseCase, GetPlaylistUseCase, ListPlaylistFollowersUseCase, ListPlaylistsByCategoryUseCase, ListPlaylistsByNameUseCase, ListPlaylistsByRelevanceUseCase, ListPlaylistsUseCase, UpdatePlaylistFollowersUseCase, UpdatePlaylistUseCase } from '../../../../domain/playlist.js'
+import { CreatePlaylistUseCaseRequest, DeletePlaylistUseCaseRequest, DownloadPlaylistUseCaseRequest, GetPlaylistUseCaseRequest, ListPlaylistFollowersUseCaseResquest, ListPlaylistsByCategoryUseCaseRequest, ListPlaylistsByNameUseCaseRequest, ListPlaylistsByRelevanceUseCaseRequest, UpdatePlaylistFollowersUseCaseRequest, UpdatePlaylistUseCaseRequest } from '../../../../domain/ucio/playlist.js'
+import { CreatePlaylistUseCaseRepository, DeletePlaylistUseCaseRepository, DownloadPlaylistUseCaseRepository, GetPlaylistUseCaseRepository, ListPlaylistFollowersUseCaseRepository, ListPlaylistsByCategoryUseCaseRepository, ListPlaylistsByNameUseCaseRepository, ListPlaylistsByRelevanceUseCaseRepository, ListPlaylistsUseCaseRepository, UpdatePlaylistFollowersUseCaseRepository, UpdatePlaylistUseCaseRepository } from '../../../../infrastructure/provider/repository/playlist.js'
+import { CreatePlaylistUseCaseValidate, DeletePlaylistUseCaseValidate, DownloadPlaylistUseCaseValidate, GetPlaylistUseCaseValidate, ListPlaylistFollowersUseCaseValidate, ListPlaylistsByCategoryUseCaseValidate, ListPlaylistsByNameUseCaseValidate, ListPlaylistsByRelevanceUseCaseValidate, UpdatePlaylistFollowersUseCaseValidate, UpdatePlaylistUseCaseValidate } from '../../../../infrastructure/provider/validate/playlist.js'
 import { SuccessResponse , InternalServerErrorResponse } from '../response/response.js'
 class CreatePlaylistController {
     createPlaylist(req,res) {
@@ -205,6 +205,27 @@ class ListPlaylistFollowersController {
     }
 }
 
+class UpdatePlaylistFollowersController {
+    updatePlaylistFollowers(req,res) {
+        const { accountID, id, followers } = req.body
+
+        const ucReq = new UpdatePlaylistFollowersUseCaseRequest(id,followers,accountID)
+
+        const validate = new UpdatePlaylistFollowersUseCaseValidate()
+        const repository = new UpdatePlaylistFollowersUseCaseRepository()
+
+        const usecase = new UpdatePlaylistFollowersUseCase(validate,repository)
+
+        const ucRes = usecase.updatePlaylistFollowers(ucReq)
+
+        if (ucRes.error) {
+            return new InternalServerErrorResponse().internalServerError(res, ucRes.error)
+        } else {
+            return new SuccessResponse().success(res, null)
+        }
+    }
+}
+
 export {
     CreatePlaylistController,
     GetPlaylistController,
@@ -215,5 +236,6 @@ export {
     DownloadPlaylistController,
     ListPlaylistsController,
     ListPlaylistsByCategoryController,
-    ListPlaylistFollowersController
+    ListPlaylistFollowersController,
+    UpdatePlaylistFollowersController
 }

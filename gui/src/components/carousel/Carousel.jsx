@@ -8,7 +8,6 @@ export const CarouselItem = (props) => {
     const { children, width, itemPath } = props
 
     const el = children[1]
-    console.log(children)
     return (
         <div className='carousel-item-custom' style={{width:width, backgroundImage: `url(${el.image})`}}>
             <Link to={{pathname:`${itemPath}`}} state={{ID: el.id, accountID: el.accountID}} style={{textDecoration: 'none', display:'flex', width:'100%', height:'100%'}}>

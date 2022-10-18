@@ -46,8 +46,6 @@ const [messageMusics, setMessageMusics] = useState((
 ))
 
   async function removeMusics() {
-    console.log(props)
-    console.log(playlistName)
     try {
       const response = await axiosInstance({
         method: 'post',
