@@ -1,20 +1,20 @@
-.container-navbar{
-    display: flex;
-    justify-content: space-between;
-    margin: 0 auto;
-    flex-wrap: wrap;
-    border: none;
+.container-navbar {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  border: none;
 }
 
-.minHeight{
-    min-height: 75%;
+.minHeight {
+  min-height: 75%;
 }
 
-.start{
-    justify-content: flex-start;
+.start {
+  justify-content: flex-start;
 }
 
-.column{
-    flex-direction: column;
-    justify-content: flex-start;
+.column {
+  flex-direction: column;
+  justify-content: flex-start;
 }
