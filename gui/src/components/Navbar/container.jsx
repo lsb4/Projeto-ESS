@@ -1,11 +1,11 @@
-import './Container.modules.css'
+import "./Container.modules.css";
 
-function Container(props){
-    return(
-        <div className={`container-navbar ${props.customClass}`}>
-            {props.children}
-        </div>
-    );
+function Container(props) {
+  return (
+    <div className={`container-navbar ${props.customClass}`}>
+      {props.children}
+    </div>
+  );
 }
 
-export default Container
+export default Container;
