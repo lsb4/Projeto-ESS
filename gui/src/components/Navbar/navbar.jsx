@@ -4,8 +4,24 @@ import "./NavBar.modules.css";
 import logo from "../../img/image 2.svg";
 import Home from "../../img/Home.svg";
 import Library from "../../img/Library.svg";
+import { useEffect } from "react";
+import axiosInstance from "../common/server";
 
 function NavBar() {
+  //     useEffect((axiosInstance)=>{
+  //         async function fetchCategories() {
+  //             const response = await axiosInstance({
+  //               method: "post",
+  //               url: `/getUser`,
+  //               headers: {},
+  //               data: {
+  //                 category: parseInt(localStorage.getItem(''),10)
+  //               },
+  //             });
+  //             let val = await response.data
+  //             return val
+  //         }
+  //     })
   return (
     <nav className="navBar">
       <Container>
@@ -30,7 +46,13 @@ function NavBar() {
               </a>
             </li>
             <li className="navBar-LibraryAdjust">
-              <img className="navBar-LibraryAdjustImage" src={Library} alt="" />
+              <a href="/listPlaylistByCategory">
+                <img
+                  className="navBar-LibraryAdjustImage"
+                  src={Library}
+                  alt=""
+                />
+              </a>
             </li>
             <li className="navBar-item">
               <input
