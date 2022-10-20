@@ -27,7 +27,7 @@ function AddMusicModal(props) {
   useEffect(()=>{
     if(dataBaseMusics) {
       setSelectDataBaseMusics(new Array(dataBaseMusics.length).fill(0))
-      setNewList(playlistMusics? playlistMusics : [])
+      setNewList(playlistMusics? playlistMusics.map(el=> el.id) : [])
     }
   },[props.dataBaseMusics])
 
@@ -38,7 +38,7 @@ function AddMusicModal(props) {
     const addition = dataBaseMusics.filter((el,index) => val[index]===1)
     const additions = addition.map(el => el.id)
     
-    const brandNewList = (playlistMusics ? playlistMusics.concat(additions): additions )
+    const brandNewList = (playlistMusics ? playlistMusics.map(el=> el.id).concat(additions): additions )
     setNewList(brandNewList)
   }
 
