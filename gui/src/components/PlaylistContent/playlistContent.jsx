@@ -21,6 +21,9 @@ import { useEffect } from "react";
 import axiosInstance from "../common/server";
 import { useState } from "react";
 
+import Share from "../SharePlaylist/shareMusic"
+import Compartilhar from "../SharePlaylist/shareMusic";
+
 function PlaylistContent(props) {
   const {
     playlistName,
@@ -309,12 +312,9 @@ function PlaylistContent(props) {
               Editar informações
             </p>
             <p
-              onClick={() => {
-                navigator.clipboard.writeText("Paga o spotify premium :)");
-              }}
             >
               <img src={shareButton} alt="" />
-              Compartilhar
+              <Share/> 
             </p>
             <p className="playlistContent-followHeart" onClick={followPLaylist}>
               <img src={followButton} alt="" />
